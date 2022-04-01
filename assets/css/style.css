@@ -144,9 +144,32 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Header Social Links
 --------------------------------------------------------------*/
-.header-social-links {
-  padding-right: 15px;
+
+@media screen and (min-device-width: 375px)
+and (max-device-width: 420px) {
+  .header-social-links {
+    padding-right: 65px;
+  }
 }
+@media screen and (min-device-width: 280px)
+and (max-device-width: 370px) {
+  .header-social-links {
+    padding-right: 5px;
+  }
+}
+@media screen and (min-device-width: 425px)
+and (max-device-width: 500px) {
+  .header-social-links {
+    padding-right:95px;
+  }
+}
+@media screen and (min-device-width: 700px)
+and (max-device-width: 1024px) {
+  .header-social-links {
+    padding-right:15px;
+  }
+}
+
 .header-social-links a {
   color: #6f6f6f;
   padding-left: 6px;

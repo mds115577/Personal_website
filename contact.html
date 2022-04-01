@@ -112,17 +112,17 @@
 
           <div class="col-lg-8 mt-5 mt-lg-0">
 
-            <form  method="post" name="google-sheet" role="form" class="was-validated">
+            <form  method="post" name="google-sheet" role="form" class="was-validated" action="https://formspree.io/f/xpzbjqwz" id="my-form">
               <div class="row">
                 <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                  <input type="text" name="name" pattern="[a-zA-z ._%+-]{3,}"   required title="3 characters minimum And only use Alphabets" class="form-control" id="name" placeholder="Your Name" required>
                 </div>
                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                  <input type="email" class="form-control" name="email" id="email" pattern="[a-z.0-9_%+-]+@[a-z.-]+\.[a-z]{2,4}$" placeholder="Your Email" required>
                 </div>
               </div>
               <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                <input type="text" class="form-control" name="subject" id="subject" pattern="[a-zA-Z ._%+]{4,}"   required title="4 characters minimum And only use Alphabets" placeholder="Subject" required>
               </div>
               <div class="form-group mt-3">
                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
@@ -164,16 +164,45 @@
 
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby_8C6OTr8XaYkA8t2WyVoWmyK25ioK4p3E05_X8X4RGVjDVvD3Dyx02M0dFwKd_rsQ3Q/exec'
-    const form = document.forms['google-sheet']
+    var form = document.getElementById("my-form");
+    
+    async function handleSubmit(event) {
+      event.preventDefault();
+      var status = document.getElementById("my-form-status");
+      var data = new FormData(event.target);
+      fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+            'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          status.innerHTML = "Thanks for your submission!";
+          form.reset()
+        } else {
+          response.json().then(data => {
+            if (Object.hasOwn(data, 'errors')) {
+              status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+            } else {
+              status.innerHTML = "Oops! There was a problem submitting your form"
+            }
+          })
+        }
+      }).catch(error => {
+        status.innerHTML = "Oops! There was a problem submitting your form"
+      });
+
+      alert("Thank You For Connecting With Me");
+      form.reset()
+    location.reload();
+    }
+    form.addEventListener("submit", handleSubmit)
+
+    
+
+</script>
   
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => alert("Thanks for Contacting us..! We Will Contact You Soon..."))
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
